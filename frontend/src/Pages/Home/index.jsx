@@ -13,7 +13,6 @@ const Home = () => {
             searchTerm: searchTerm
             } 
         });
-        console.log(searchTerm);
     };
 
     const getBestSellers = async () => {
@@ -31,8 +30,6 @@ const Home = () => {
     useEffect(() => {
         getBestSellers();
     }, []);
-
-    console.log(bestSellers);
 
     return (
         <div>

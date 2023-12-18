@@ -35,13 +35,15 @@ const BookDetails = () => {
                 <h2>{book.volumeInfo.authors}</h2>
                 <h2>{book.volumeInfo.publisher}</h2>
                 <h2>{book.volumeInfo.publishedDate}</h2>
-                <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} />
-                <p>{book.volumeInfo.maturityRating}</p>
+                <div className="flex w-1/12">
+                    {book.volumeInfo.imageLinks === undefined ? <img src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg" alt={book.volumeInfo.title} /> : <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} /> }
+                </div>
+                {/* <p>{book.volumeInfo.maturityRating}</p> */}
                 <p>{book.volumeInfo.description}</p>
                 <h3>Average rating: {book.volumeInfo.averageRating} stars by {book.volumeInfo.ratingsCount} readers</h3>
-                    {book.volumeInfo.categories.map((category, idx) => (
+                    {/* {book.volumeInfo.categories.map((category, idx) => (
                         <h3 key={idx}>{category}</h3>
-                    ))}
+                    ))} */}
                 {book.volumeInfo.industryIdentifiers.map((isbn, idx) => (
                     <h3 key={idx}>{isbn.type}: {isbn.identifier}</h3>
                 ))}

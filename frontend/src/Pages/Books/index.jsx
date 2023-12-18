@@ -3,17 +3,13 @@ import { useState, useEffect } from "react";
 
 const Books = () => {
 	const [books, setBooks] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [sort, setSort] = useState("relevance");
     const location = useLocation();
 
     const handleSort = (e) => {
-        setSort(e.target.value);
+        setSort(e.target.value); 
     }
-
-
-    // useEffect(() => {
-    //     handleSubmit();
-    // }, []);
 
     console.log(sort);
     console.log(location.state.searchTerm);
@@ -26,6 +22,7 @@ const Books = () => {
             // const response = await fetch(`https://openlibrary.org/search.json?q=${location.state.searchTerm}&limit=40`);
 			const data = await response.json();
 			setBooks(data);
+            setIsLoading(false);
 		} catch (err) {
 			console.log(err);
 		}
@@ -33,9 +30,10 @@ const Books = () => {
 
 	useEffect(() => {
 		getBooks();
-	}, []);
-	console.log(books);
-	// console.log(books.items[0].volumeInfo.title)
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [sort]);
+	console.log(books, location.state.searchTerm);
+    // books.items.forEach((book) => console.log(book.volumeInfo.imageLinks));
 
 	const loading = () => (
 		<div>
@@ -45,24 +43,19 @@ const Books = () => {
 
 	const loaded = () => (
 		<div>
-            <form> {/*onSubmit={handleSubmit}*/}
-            Sort By: 
-                <select onChange={handleSort}> {/*onChange={handleSort}*/}
-                    <option value="relevance">Relevance</option>
-                    <option value="newest">Newest</option>
-                </select>
-            </form>
-
             {/* Google Books map */}
+            <div className="grid grid-cols-5 grid-rows-4 m-20">
 			{books.items.map((book, idx) => (
-				<div key={idx}>
+				<div className="w-1/3"key={idx}>
                     <Link to={`/books/${book.id}`}>
-                    <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} />
+                    {book.volumeInfo.imageLinks === undefined ? <img src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg" alt={book.volumeInfo.title} /> : <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} /> }
+                    {/* <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} /> : <img src="https://pub111.com/wp-content/plugins/post-slider-carousel/images/no-image-available-grid.jpg" alt={book.volumeInfo.title} />} */}
 					<h2>{book.volumeInfo.title}</h2>
                     </Link>
                     <h3>{book.volumeInfo.authors}</h3>
 				</div>
 			))}
+            </div>
 
             {/* OpenLibrary map */}
             {/* {books.docs.map((book, idx) => (
@@ -78,11 +71,18 @@ const Books = () => {
 	);
 
 	return (
-		<>
+		<div>
+            <form> {/*onSubmit={handleSubmit}*/}
+            Sort By: 
+                <select onChange={handleSort} default="relevance"> {/*onChange={handleSort}*/}
+                    <option value="relevance">Relevance</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </form>
 			<h1>Results: </h1>
 			{/* {books ? console.log("loaded") : console.log("loading")} */}
-			{books ? loaded() : loading()}
-		</>
+			{isLoading ? loading() : loaded()}
+		</div>
 	);
 };
 
