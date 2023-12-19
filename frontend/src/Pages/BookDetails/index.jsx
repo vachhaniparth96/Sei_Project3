@@ -39,7 +39,10 @@ const BookDetails = () => {
                     {book.volumeInfo.imageLinks === undefined ? <img src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg" alt={book.volumeInfo.title} /> : <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} /> }
                 </div>
                 {/* <p>{book.volumeInfo.maturityRating}</p> */}
-                <p>{book.volumeInfo.description}</p>
+                {/* { markup = {__html: book.volumeInfo.description};} */}
+                <div dangerouslySetInnerHTML={{__html: book.volumeInfo.description}}>
+                {/* <p>{book.volumeInfo.description}</p> */}
+                </div>
                 <h3>Average rating: {book.volumeInfo.averageRating} stars by {book.volumeInfo.ratingsCount} readers</h3>
                     {/* {book.volumeInfo.categories.map((category, idx) => (
                         <h3 key={idx}>{category}</h3>

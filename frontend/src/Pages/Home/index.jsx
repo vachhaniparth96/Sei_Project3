@@ -1,20 +1,9 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 const Home = () => {
-    const [searchTerm, setSearchTerm] = useState("");
     const [bestSellers, setBestSellers] = useState(null); 
-    const history = useNavigate();
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        history("/books", { state: {
-            searchTerm: searchTerm
-            } 
-        });
-    };
-
     const getBestSellers = async () => {
         try{
             const response = await fetch(
@@ -26,23 +15,12 @@ const Home = () => {
             console.log(err);
         }
     }
-
     useEffect(() => {
         getBestSellers();
     }, []);
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search for a book or author"
-                />
-                <button type="submit">Search</button>
-            </form>
-
             <h1>Current NYT Best Sellers: </h1>
             {bestSellers ? (
                 <div>

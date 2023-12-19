@@ -17,7 +17,7 @@ const Books = () => {
 	const getBooks = async () => {
 		try {
 			const response = await fetch(
-				`https://www.googleapis.com/books/v1/volumes?q=${location.state.searchTerm}&orderBy=${sort}&startIndex=0&maxResults=40&key=AIzaSyAdE8yYtj0PJzx2ZsK9seCJTpRaOuF1bZo`
+				`https://www.googleapis.com/books/v1/volumes?q=${location.state.searchTerm}&orderBy=${sort}&startIndex=0&maxResults=40`
 			);
             // const response = await fetch(`https://openlibrary.org/search.json?q=${location.state.searchTerm}&limit=40`);
 			const data = await response.json();
@@ -50,9 +50,9 @@ const Books = () => {
                     <Link to={`/books/${book.id}`}>
                     {book.volumeInfo.imageLinks === undefined ? <img src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg" alt={book.volumeInfo.title} /> : <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} /> }
                     {/* <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} /> : <img src="https://pub111.com/wp-content/plugins/post-slider-carousel/images/no-image-available-grid.jpg" alt={book.volumeInfo.title} />} */}
-					<h2>{book.volumeInfo.title}</h2>
+					<h2 className="text-xs font-semibold">{book.volumeInfo.title}</h2>
                     </Link>
-                    <h3>{book.volumeInfo.authors}</h3>
+                    <h3 className="text-xs pb-10">{book.volumeInfo.authors}</h3>
 				</div>
 			))}
             </div>
@@ -79,7 +79,7 @@ const Books = () => {
                     <option value="newest">Newest</option>
                 </select>
             </form>
-			<h1>Results: </h1>
+			<h1>Results for "{location.state.searchTerm}": </h1>
 			{/* {books ? console.log("loaded") : console.log("loading")} */}
 			{isLoading ? loading() : loaded()}
 		</div>
